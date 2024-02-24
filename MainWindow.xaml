@@ -1,0 +1,222 @@
+﻿<Window x:Class="RRule_Generator_Form.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RRule_Generator_Form"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" d:Height="650" Width="870" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Start Section -->
+        <Border Grid.Row="0" Grid.Column="0" BorderBrush="#ddd" BorderThickness="1" CornerRadius="3 3 0 0" Padding="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Start" VerticalAlignment="Center" FontWeight="Bold"/>
+                <DatePicker SelectedDate="{Binding StartDate}" Margin="10" />
+            </StackPanel>
+        </Border>
+
+        <!-- Rules Section -->
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="#ddd" BorderThickness="1 0 1 1" Padding="10">
+            <StackPanel>
+
+                <!-- Frequency Selection -->
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Repeat" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <ComboBox Margin="10" SelectedValue="{Binding SelectedFrequency, Mode=TwoWay}" SelectedValuePath="Content">
+                        <ComboBoxItem>Yearly</ComboBoxItem>
+                        <ComboBoxItem>Monthly</ComboBoxItem>
+                        <ComboBoxItem>Weekly</ComboBoxItem>
+                        <ComboBoxItem>Daily</ComboBoxItem>
+                        <ComboBoxItem>Hourly</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
+
+                <!-- Yearly Options -->
+                <StackPanel Visibility="{Binding SPYearly, Converter={StaticResource BoolToVisibility}}">
+                    <!-- Depending on the selection, show/hide the appropriate controls using Visibility binding -->
+                    <!-- Option a) on a specified day of year -->
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="RB_YearlySpecifiedOption" GroupName="YealyOptions" VerticalAlignment="Center" IsChecked="{Binding IsYearlySpecifiedOption}">on</RadioButton>
+                        <ComboBox Margin="10" Width="50" SelectedValue="{Binding YearlySpecifiedOptionMonth}" SelectedValuePath="Content" IsEnabled="{Binding ElementName= RB_YearlySpecifiedOption, Path=IsChecked}">
+                            <ComboBoxItem Content="Jan"/>
+                            <ComboBoxItem Content="Feb"/>
+                            <ComboBoxItem Content="Mar"/>
+                            <ComboBoxItem Content="Apr"/>
+                            <ComboBoxItem Content="May"/>
+                            <ComboBoxItem Content="Jun"/>
+                            <ComboBoxItem Content="Jul"/>
+                            <ComboBoxItem Content="Aug"/>
+                            <ComboBoxItem Content="Sep"/>
+                            <ComboBoxItem Content="Oct"/>
+                            <ComboBoxItem Content="Nov"/>
+                            <ComboBoxItem Content="Dec"/>
+                        </ComboBox>
+                        <ComboBox Margin="10" Width="50" ItemsSource="{Binding YearlyDaysOfMonth, Mode=OneWay}" SelectedValue="{Binding YearlySpecifiedOptionDay, Mode=TwoWay}" IsEnabled="{Binding ElementName= RB_YearlySpecifiedOption, Path=IsChecked}"/>
+                    </StackPanel>
+
+                    <!-- Option b) on a described day of the month -->
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="RB_YearlyDescribedOption" GroupName="YealyOptions" VerticalAlignment="Center" IsChecked="{Binding IsYearlyDescribedOption}">on the</RadioButton>
+                        <ComboBox Margin="10" Width="70" SelectedValue="{Binding YearlyDescribedOptionPosition}" SelectedValuePath="Content" IsEnabled="{Binding ElementName= RB_YearlyDescribedOption, Path=IsChecked}">
+                            <ComboBoxItem Content="First"/>
+                            <ComboBoxItem Content="Second"/>
+                            <ComboBoxItem Content="Third"/>
+                            <ComboBoxItem Content="Fourth"/>
+                            <ComboBoxItem Content="Last"/>
+                        </ComboBox>
+                        <ComboBox Margin="10" Width="100" SelectedValue="{Binding YearlyDescribedOptionDayOfWeek}" SelectedValuePath="Content" IsEnabled="{Binding ElementName= RB_YearlyDescribedOption, Path=IsChecked}">
+                            <ComboBoxItem Content="Monday"/>
+                            <ComboBoxItem Content="Tuesday"/>
+                            <ComboBoxItem Content="Wednesday"/>
+                            <ComboBoxItem Content="Thursday"/>
+                            <ComboBoxItem Content="Friday"/>
+                            <ComboBoxItem Content="Saturday"/>
+                            <ComboBoxItem Content="Sunday"/>
+                            <ComboBoxItem Content="Day"/>
+                            <ComboBoxItem Content="Weekday"/>
+                            <ComboBoxItem Content="Weekend day"/>
+                        </ComboBox>
+                        <TextBlock Text="of" VerticalAlignment="Center"/>
+                        <ComboBox Margin="10" Width="50"  SelectedValue="{Binding YearlyDescribedOptionMonth}" SelectedValuePath="Content" IsEnabled="{Binding ElementName= RB_YearlyDescribedOption, Path=IsChecked}">
+                            <ComboBoxItem Content="Jan"/>
+                            <ComboBoxItem Content="Feb"/>
+                            <ComboBoxItem Content="Mar"/>
+                            <ComboBoxItem Content="Apr"/>
+                            <ComboBoxItem Content="May"/>
+                            <ComboBoxItem Content="Jun"/>
+                            <ComboBoxItem Content="Jul"/>
+                            <ComboBoxItem Content="Aug"/>
+                            <ComboBoxItem Content="Sep"/>
+                            <ComboBoxItem Content="Oct"/>
+                            <ComboBoxItem Content="Nov"/>
+                            <ComboBoxItem Content="Dec"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Monthly Options -->
+
+                <StackPanel Visibility="{Binding SPMonthly, Converter={StaticResource BoolToVisibility}}">
+
+                    <!-- interval -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="every" VerticalAlignment="Center"/>
+                        <local:NumericTextBox Margin="5 0" Width="50" Text="{Binding MonthlyInterval}"/>
+                        <TextBlock Text="month(s)" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Option a) on a specified day of year -->
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="RB_MonthlySpecifiedOption" GroupName="MonthlyOptions" VerticalAlignment="Center" IsChecked="{Binding IsMonthlySpecifiedOption}">on day</RadioButton>
+                        <ComboBox Margin="10" Width="50" ItemsSource="{Binding MonthlyDaysOfMonth, Mode=OneWay}" SelectedValue="{Binding MonthlySpecifiedOptionDay, Mode=TwoWay}" IsEnabled="{Binding ElementName= RB_MonthlySpecifiedOption, Path=IsChecked}"/>
+                    </StackPanel>
+
+                    <!-- Option b) on a described day of the month -->
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="RB_MonthlyDescribedOption" GroupName="MonthlyOptions" VerticalAlignment="Center" IsChecked="{Binding IsMonthlyDescribedOption}">on the</RadioButton>
+                        <ComboBox Margin="10" Width="70" SelectedValue="{Binding MonthlyDescribedOptionPosition}" SelectedValuePath="Content" IsEnabled="{Binding ElementName= RB_MonthlyDescribedOption, Path=IsChecked}">
+                            <ComboBoxItem Content="First"/>
+                            <ComboBoxItem Content="Second"/>
+                            <ComboBoxItem Content="Third"/>
+                            <ComboBoxItem Content="Fourth"/>
+                            <ComboBoxItem Content="Last"/>
+                        </ComboBox>
+                        <ComboBox Margin="10" Width="100" SelectedValue="{Binding MonthlyDescribedOptionDayOfWeek}" SelectedValuePath="Content" IsEnabled="{Binding ElementName= RB_MonthlyDescribedOption, Path=IsChecked}">
+                            <ComboBoxItem Content="Monday"/>
+                            <ComboBoxItem Content="Tuesday"/>
+                            <ComboBoxItem Content="Wednesday"/>
+                            <ComboBoxItem Content="Thursday"/>
+                            <ComboBoxItem Content="Friday"/>
+                            <ComboBoxItem Content="Saturday"/>
+                            <ComboBoxItem Content="Sunday"/>
+                            <ComboBoxItem Content="Day"/>
+                            <ComboBoxItem Content="Weekday"/>
+                            <ComboBoxItem Content="Weekend day"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Weekly Options -->
+                <StackPanel Visibility="{Binding SPWeekly, Converter={StaticResource BoolToVisibility}}">
+                    <!-- interval -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="every" VerticalAlignment="Center"/>
+                        <local:NumericTextBox Margin="5 0" Width="50" Text="{Binding WeeklyInterval}"/>
+                        <TextBlock Text="week(s)" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 5">
+                        <ToggleButton Content="Mon" Padding="10 5" BorderThickness="0" Background="DodgerBlue" Foreground="White" IsChecked="{Binding SelectedDaysOfWeek[0].IsDaySelected, Mode=TwoWay}"/>
+                        <ToggleButton Content="Tue" Padding="10 5" BorderThickness="0" Background="DodgerBlue" Foreground="White" IsChecked="{Binding SelectedDaysOfWeek[1].IsDaySelected, Mode=TwoWay}"/>
+                        <ToggleButton Content="Wed" Padding="10 5" BorderThickness="0" Background="DodgerBlue" Foreground="White" IsChecked="{Binding SelectedDaysOfWeek[2].IsDaySelected, Mode=TwoWay}"/>
+                        <ToggleButton Content="Thu" Padding="10 5" BorderThickness="0" Background="DodgerBlue" Foreground="White" IsChecked="{Binding SelectedDaysOfWeek[3].IsDaySelected, Mode=TwoWay}"/>
+                        <ToggleButton Content="Fri" Padding="10 5" BorderThickness="0" Background="DodgerBlue" Foreground="White" IsChecked="{Binding SelectedDaysOfWeek[4].IsDaySelected, Mode=TwoWay}"/>
+                        <ToggleButton Content="Sat" Padding="10 5" BorderThickness="0" Background="DodgerBlue" Foreground="White" IsChecked="{Binding SelectedDaysOfWeek[5].IsDaySelected, Mode=TwoWay}"/>
+                        <ToggleButton Content="Sun" Padding="10 5" BorderThickness="0" Background="DodgerBlue" Foreground="White" IsChecked="{Binding SelectedDaysOfWeek[6].IsDaySelected, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <!-- Toggle buttons for each day of the week -->
+                </StackPanel>
+
+                <!-- Daily Options -->
+                <StackPanel Orientation="Horizontal" Visibility="{Binding SPDaily, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock Text="every" VerticalAlignment="Center"/>
+                    <local:NumericTextBox Margin="5 0" Width="50" Text="{Binding DailyInterval}"/>
+                    <TextBlock Text="day(s)" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Hourly Options -->
+                <StackPanel Orientation="Horizontal" Visibility="{Binding SPHourly, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock Text="every" VerticalAlignment="Center"/>
+                    <local:NumericTextBox Margin="5 0" Width="50" Text="{Binding HourlyInterval}"/>
+                    <TextBlock Text="hour(s)" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- End Section -->
+        <Border Grid.Row="2" Grid.Column="0" BorderBrush="#ddd" BorderThickness="1 0 1 1" Padding="10" CornerRadius="0 0 3 3">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="End" VerticalAlignment="Center"/>
+                <ComboBox Width="75" Margin="5 0" SelectedValue="{Binding EndOption}" SelectedValuePath="Content">
+                    <ComboBoxItem>Never</ComboBoxItem>
+                    <ComboBoxItem>After</ComboBoxItem>
+                    <ComboBoxItem>On date</ComboBoxItem>
+                </ComboBox>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding After, Converter={StaticResource BoolToVisibility}}">
+                    <TextBox Margin="5 0" Width="50" Text="{Binding ExecutionTimes}"/>
+                    <TextBlock Text="execution(s)." VerticalAlignment="Center"/>
+                </StackPanel>
+                <DatePicker SelectedDate="{Binding EndDate}" Visibility="{Binding OnDate, Converter={StaticResource BoolToVisibility}}"/>
+            </StackPanel>
+        </Border>
+
+
+        <!-- RRule Generated Section -->
+        <Border Grid.Row="3" Grid.Column="0" BorderBrush="#ddd" BorderThickness="1 0 1 1" Padding="10" CornerRadius="0 0 3 3">
+            <StackPanel>
+                <Border Padding="15 10" CornerRadius="3" BorderThickness="1" BorderBrush="#ddd" HorizontalAlignment="Stretch">
+                    <WrapPanel>
+                        <TextBlock DockPanel.Dock="Left" Text="Rule" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Border DockPanel.Dock="Left" Padding="15 10" CornerRadius="3" BorderThickness="1" BorderBrush="#ddd" Background="#eee" Margin="20 0">
+                            <TextBlock Name="TB_RRule" TextWrapping="Wrap" Text="{Binding RRule}" Width="600"/>
+                        </Border>
+                        <Button DockPanel.Dock="Right" Content="Copy" Click="BTN_Copy_Click" Width="70" Height="50" VerticalAlignment="Center" Background="DodgerBlue" Foreground="White"/>
+                    </WrapPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Button Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Retrieve parameters from RRule" Padding="20 10" Margin="10" Background="DodgerBlue" Foreground="White" Click="BTN_RetrieveParamsFromRRule_Click"/>
+    </Grid>
+</Window>

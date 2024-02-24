@@ -1,0 +1,17 @@
+﻿<Window x:Class="RRule_Generator_Form.W_RetrieveParamsFromRRule"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RRule_Generator_Form"
+        mc:Ignorable="d"
+        Title="W_RetrieveParamsFromRRule" Height="250" Width="600" WindowStartupLocation="CenterOwner">
+    <Border Padding="20">
+        <StackPanel>
+            <TextBlock Text="RRule:"/>
+            <TextBox x:Name="rruleTextBox" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="50" BorderThickness="1" BorderBrush="#ddd"/>
+            <Button x:Name="retrieveButton" Content="Retrieve parameters" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10" Padding="20 10" Background="DodgerBlue" Foreground="White" Click="BTN_RetrieveParams_Click"/>
+            <Button Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10" Padding="20 10" Background="DodgerBlue" Foreground="White" Click="BTN_Cancel_Click"/>
+        </StackPanel>
+    </Border>
+</Window>
